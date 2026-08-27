@@ -1,6 +1,7 @@
 import { HashRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import StartingPage from './StartingPage';
 import ResultPage from './Resultpage';
+import HostelPage from './HostelPage';
 import EnergyPage from './EnergyPage';
 import FoodPage from './FoodPage';
 import TransportPage from './TransportPage';
@@ -38,13 +39,14 @@ function App() {
   // Custom wrapper for StartingPage to add navigation
   function StartingPageWithNav() {
     const navigate = useNavigate();
-    return <StartingPage onStart={() => navigate('/energy')} onReset={handleReset} />;
+    return <StartingPage onStart={() => navigate('/hostel')} onReset={handleReset} />;
   }
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={<StartingPageWithNav />} />
+        <Route path="/hostel" element={<HostelPage onNext={handleNext} formData={formData} />} />
         <Route path="/energy" element={<EnergyPage onNext={handleNext} formData={formData} />} />
         <Route path="/food" element={<FoodPage onNext={handleNext} formData={formData} />} />
         <Route path="/transport" element={<TransportPage onNext={handleNext} formData={formData} />} />

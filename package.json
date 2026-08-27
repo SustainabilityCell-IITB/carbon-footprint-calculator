@@ -1,6 +1,28 @@
 {
   "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.6.3"
-  }
+  },
+  "name": "carbon-footprint-calculator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SustainabilityCell-IITB/carbon-footprint-calculator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SustainabilityCell-IITB/carbon-footprint-calculator/issues"
+  },
+  "homepage": "https://github.com/SustainabilityCell-IITB/carbon-footprint-calculator#readme"
 }
