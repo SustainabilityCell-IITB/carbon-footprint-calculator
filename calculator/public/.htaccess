@@ -1,0 +1,10 @@
+# Gymkhana (Apache) rewrite rules — copied into dist/ by the build.
+# Path must match where the calculator is served: /~sustainabilitycell/green-score/
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /~sustainabilitycell/green-score/
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /~sustainabilitycell/green-score/index.html [L]
+</IfModule>
