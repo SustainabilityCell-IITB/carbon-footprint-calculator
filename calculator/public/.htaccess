@@ -1,10 +1,10 @@
 # Gymkhana (Apache) rewrite rules — copied into dist/ by the build.
-# CHANGE the username in RewriteBase and the last rule to your gymkhana user.
+# Path must match where the calculator is served: /~sustainabilitycell/green-score/
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /~sustainabilitycell/
+  RewriteBase /~sustainabilitycell/green-score/
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /~sustainabilitycell/index.html [L]
+  RewriteRule . /~sustainabilitycell/green-score/index.html [L]
 </IfModule>
