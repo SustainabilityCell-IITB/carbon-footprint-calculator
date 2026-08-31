@@ -1,0 +1,10 @@
+# Gymkhana (Apache) rewrite rules — copied into dist/ by the build.
+# CHANGE the username in RewriteBase and the last rule to your gymkhana user.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /~sustainabilitycell/
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /~sustainabilitycell/index.html [L]
+</IfModule>

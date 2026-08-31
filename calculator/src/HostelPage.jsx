@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from './assets/logo.png';
 
+// Google Apps Script Web App URL that appends each submission as a row in
+// your Google Sheet. Set VITE_SHEET_URL in calculator/.env.production.
+// See google-apps-script/Code.gs for the script to paste + how to deploy.
+// If empty, submissions are simply skipped (the calculator still works).
+const SHEET_URL = import.meta.env.VITE_SHEET_URL || '';
+
 const HOSTEL_MIN = 1;
 const HOSTEL_MAX = 21;
 const HOSTELS_PER_PAGE = 7;
@@ -70,17 +76,23 @@ export default function HostelPage({ onNext, formData }) {
     e.preventDefault();
     if (onNext) onNext(form);
 
-    // Send user info to backend (fire-and-forget, don't block navigation)
-    fetch('http://localhost:3001/api/userinfo', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        hostelNo: form.hostelNo,
-        userName: form.userName,
-      }),
-    }).catch(err => {
-      console.warn('Could not save user info to backend:', err.message);
-    });
+    // Append the submission to the Google Sheet (fire-and-forget: never blocks
+    // navigation). Apps Script needs a "simple" request (text/plain) so the
+    // browser skips the CORS preflight it can't answer; no-cors because we
+    // don't need to read the response.
+    if (SHEET_URL) {
+      fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          hostelNo: form.hostelNo,
+          userName: form.userName,
+        }),
+      }).catch(err => {
+        console.warn('Could not save submission to sheet:', err.message);
+      });
+    }
 
     navigate('/energy');
   };
