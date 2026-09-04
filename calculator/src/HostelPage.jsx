@@ -8,63 +8,67 @@ import logo from './assets/logo.png';
 // If empty, submissions are simply skipped (the calculator still works).
 const SHEET_URL = import.meta.env.VITE_SHEET_URL || '';
 
-const HOSTEL_MIN = 1;
-const HOSTEL_MAX = 21;
-const HOSTELS_PER_PAGE = 7;
 const GREEN = '#BDD873';
 const GREEN_DARK = '#8BC34A';
 
+// All available hostels: 1–19, 21 (no 20), plus Tansa House and Others
+const HOSTELS = [
+  ...Array.from({ length: 19 }, (_, i) => String(i + 1)),
+  '21',
+  'Tansa House',
+  'Others',
+];
+
 function HostelSelector({ value, onChange }) {
-  const [start, setStart] = useState(1);
-
-  // Responsive hostel display - more on desktop, fewer on mobile
-  const isMobile = window.innerWidth <= 700;
-  const hostelsPerPage = isMobile ? 5 : HOSTELS_PER_PAGE;
-
-  const end = Math.min(start + hostelsPerPage - 1, HOSTEL_MAX);
-  const canPrev = start > HOSTEL_MIN;
-  const canNext = end < HOSTEL_MAX;
-  const hostels = [];
-  for (let i = start; i <= end; i++) hostels.push(i);
-
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24, justifyContent: 'center' }}>
-      <button type="button" onClick={() => setStart(Math.max(HOSTEL_MIN, start - hostelsPerPage))} disabled={!canPrev} style={{ background: 'none', border: 'none', fontSize: 28, color: canPrev ? GREEN_DARK : '#ccc', cursor: canPrev ? 'pointer' : 'default' }}>&lt;</button>
-      {hostels.map(num => (
-        <button
-          key={num}
-          type="button"
-          onClick={() => onChange(num)}
-          style={{
-            width: 44,
-            height: 44,
-            borderRadius: '50%',
-            background: value === num ? GREEN : '#e6e6e6',
-            color: value === num ? '#222' : '#666',
-            fontWeight: 700,
-            fontSize: 20,
-            border: 'none',
-            margin: '0 2px',
-            boxShadow: value === num ? '0 2px 8px rgba(139,195,74,0.15)' : 'none',
-            cursor: 'pointer',
-            transition: 'background 0.15s, color 0.15s',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 0,
-          }}
-        >
-          {num}
-        </button>
-      ))}
-      <button type="button" onClick={() => setStart(Math.min(HOSTEL_MAX - hostelsPerPage + 1, start + hostelsPerPage))} disabled={!canNext} style={{ background: 'none', border: 'none', fontSize: 28, color: canNext ? GREEN_DARK : '#ccc', cursor: canNext ? 'pointer' : 'default' }}>&gt;</button>
+    <div style={{
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: 10,
+      marginBottom: 24,
+      justifyContent: 'center',
+      maxWidth: 520,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    }}>
+      {HOSTELS.map(hostel => {
+        const isSelected = value === hostel;
+        const isText = hostel === 'Tansa House' || hostel === 'Others';
+        return (
+          <button
+            key={hostel}
+            type="button"
+            onClick={() => onChange(hostel)}
+            style={{
+              minWidth: isText ? 'auto' : 44,
+              height: 44,
+              borderRadius: isText ? 999 : '50%',
+              padding: isText ? '0 18px' : 0,
+              background: isSelected ? GREEN : '#e6e6e6',
+              color: isSelected ? '#222' : '#666',
+              fontWeight: 700,
+              fontSize: isText ? 14 : 20,
+              border: 'none',
+              boxShadow: isSelected ? '0 2px 8px rgba(139,195,74,0.15)' : 'none',
+              cursor: 'pointer',
+              transition: 'background 0.15s, color 0.15s',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: isText ? 'auto' : 44,
+            }}
+          >
+            {hostel}
+          </button>
+        );
+      })}
     </div>
   );
 }
 
 export default function HostelPage({ onNext, formData }) {
   const [form, setForm] = useState({
-    hostelNo: formData.hostelNo || 1,
+    hostelNo: formData.hostelNo || '1',
   });
   const navigate = useNavigate();
 
